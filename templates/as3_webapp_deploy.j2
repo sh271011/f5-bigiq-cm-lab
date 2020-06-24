@@ -1,0 +1,38 @@
+{
+    "class": "ADC",
+    "schemaVersion": "3.12.0",
+    "target": {
+            "address": "{{ bigip_devices.F5_A.ip }}"
+    },
+    "{{ tenant }}": {
+            "class": "Tenant",
+            "HTTP_Service": {
+                    "class": "Application",
+                    "template": "http",
+                    "serviceMain": {
+                            "class": "Service_HTTP",
+                            "virtualAddresses": [
+                                    "{{ virtual.destination }}"
+                            ],
+                            "snat": "{{ virtual.snat }}",
+                            "pool": "{{ pool.name }}"
+                    },
+                    "{{ pool.name }}": {
+                            "class": "Pool",
+                            "monitors": [
+                                    "{{ pool.monitor }}"
+                            ],
+                            "members": [{
+                                            "servicePort": {{ pool.port }},
+                                            "serverAddresses": [
+                                                {% set comma = joiner(",") %}
+                                                {% for member in nodes %}
+                                                {{comma()}} "{{  member.address  }}"
+                                                {% endfor %}
+                                            ]
+                                    }
+                            ]
+                    }
+            }
+    }
+}

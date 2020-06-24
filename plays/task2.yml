@@ -8,6 +8,9 @@
 # 5. Attach a pool to virtual server
 # 6. Attach profile to virtual server
 
+#ansible-playbook plays/task2.yml -i inventory --ask-vault-pass
+#Vault password:ansible
+
 - name: Playbook to create HTTP application app1 on F5-A
   hosts: bigiq
   connection: local
@@ -215,3 +218,6 @@
         force_basic_auth: no
         validate_certs: no
       register: deployment
+
+
+    
