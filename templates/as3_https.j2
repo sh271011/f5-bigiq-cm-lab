@@ -1,0 +1,61 @@
+{
+    "class": "AS3",
+    "action": "deploy",
+    "declaration": {
+        "class": "ADC",
+        "schemaVersion": "3.12.0",
+        "target": {
+            "address": "{{ bigip_devices.F5_A.ip }}"
+        },
+        "{{ tenant }}": {
+            "class": "Tenant",
+            "{{ app }}": {
+                "class": "Application",
+                "template": "https",
+                "serviceMain": {
+                    "pool": "Pool",
+                    "enable": true,
+                    "serverTLS": "TLS_Server",
+                    "virtualPort": 443,
+                    "profileAnalytics": {
+                        "use": "Analytics_Profile"
+                    },
+                    "virtualAddresses": [
+                        "10.128.10.110"
+                    ],
+                    "class": "Service_HTTPS"
+                },
+                "Pool": {
+                    "members": [
+                        {
+                            "adminState": "enable",
+                            "servicePort": 80,
+                            "serverAddresses": [
+                                "10.128.20.30",
+                                "10.128.20.31"
+                            ]
+                        }
+                    ],
+                    "class": "Pool"
+                },
+                "TLS_Server": {
+                    "certificates": [
+                        {
+                            "certificate": "Certificate"
+                        }
+                    ],
+                    "class": "TLS_Server"
+                },
+                "Certificate": {
+                    "privateKey": {
+                        "bigip": "/Common/default.key"
+                    },
+                    "certificate": {
+                        "bigip": "/Common/default.crt"
+                    },
+                    "class": "Certificate"
+                }
+            }
+        }
+    }
+}

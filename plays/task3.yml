@@ -1,9 +1,9 @@
 #This tasks deploys an AS3 Web Application
 #
-#ansible-playbook plays/task3.yml -i inventory -e "tenant=<tenant_name>" --ask-vault-pass
+#ansible-playbook plays/task3.yml -i inventory -e "tenant=<tenant_name> app=<app_name>" --ask-vault-pass
 #
 #Please refer the example exceution below
-#ansible-playbook plays/task4.yml -i inventory -e "tenant=tenant1" --ask-vault-pass
+#ansible-playbook plays/task4.yml -i inventory -e "tenant=tenant1 app=app1" --ask-vault-pass
 #Vault password:ansible
 
 - name: Playbook to create HTTP application app1 on F5-A

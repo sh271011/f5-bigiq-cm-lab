@@ -1,34 +1,23 @@
 ---
-tenant: "{{ tenant}}"
+tenant: "{{ tenant }}"
+app: "{{ app }}"
 f5_hostname: "bigip-a.example.net"
-module: "adc-core"
-snapshot:
-  name: "{{ tenant }}_snapshot"
-  description: "Snapshot before deploying {{ tenant }}"
-deployment:
-  name: "deploy_{{ tenant }}"
-  description: "Deploying {{ tenant }} to F5-A"
-partition: "Common"
-nodes:
-  - name: "{{ tenant }}_web1"
-    address: "10.128.20.34"
-  - name: "{{ tenant }}_web2"
-    address: "10.128.20.35"
-pool:
-  name: "{{ tenant }}_pool"
-  lb_mode: "round-robin"
-  port: 80
-  monitor: "http"
 virtual:
-  name: "{{ tenant }}.example.net"
-  destination: "10.128.10.112"
-  mask: "255.255.255.255"
-  port: 80
-  description: "HTTP virtual for {{ tenant }}"
+  destination: "10.128.10.10"
   snat: "auto"
-  ipProtocol: "tcp"
-profile:
-  - name: "tcp-wan-optimized"
-    context: "clientside"
-  - name: "tcp-lan-optimized"
-    context: "serverside"
+  port: 80
+pool:
+  name: "{{ app }}_pool"
+  monitor: "http"
+  port: 80
+  loadBalancingMode: "round-robin"
+pool_mem:
+  - address: "10.128.20.11"
+  - address: "10.128.20.12"
+  - address: "10.128.20.13"
+serverTLS:
+  name: "webtls"
+  cert_name: "webcert"
+  certificate: "/Common/default.crt"
+  key: "/Common/default.key"
+    
